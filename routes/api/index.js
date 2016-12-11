@@ -12,6 +12,8 @@ var items = require('./items');
 
 // items
 app.get('/items', items.list);
+app.get('/items/search', items.search);
+app.get('/items/:id', items.show);
 
 // members
 app.post('/members/signup', members.signup);
