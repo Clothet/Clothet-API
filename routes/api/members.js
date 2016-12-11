@@ -23,13 +23,13 @@ var fs = require('fs');
 var util_path = require('path');
 
 /**
- * @api {post} /api/member/signup Signup
- * @apiName member.signup
- * @apiGroup member
+ * @api {post} /api/members/signup Signup
+ * @apiName members.signup
+ * @apiGroup members
  *
- * @apiParam {string} user member unique email.
+ * @apiParam {string} username member unique email.
  * @apiParam {string} password member password
- * @apiParam {string} username user name.
+ * @apiParam {string} name user name.
  *
  * @apiSuccess {bool} success success
  * @apiSuccessExample Success-Response:
@@ -47,12 +47,12 @@ var util_path = require('path');
  */
 exports.signup = function(req, res) {
     var newMember = {
-        user: req.body.user,
+        username: req.body.username,
         password: req.body.password,
-        username: req.body.username
+        name: req.body.name
     };
 
-    if (!newMember.user || !newMember.password || !newMember.username) {
+    if (!newMember.username || !newMember.password || !newMember.name) {
         return res.status(400).json({
             error: true,
             msg: 'invaild parameters'
@@ -94,9 +94,9 @@ var letMeLogin = function(user, req, res, response) {
 };
 
 /**
- * @api {post} /api/member/login Login
- * @apiName member.login
- * @apiGroup member
+ * @api {post} /api/members/login Login
+ * @apiName members.login
+ * @apiGroup members
  *
  * @apiParam {string} user member's account(email).
  * @apiParam {string} password member's password
@@ -126,19 +126,19 @@ var letMeLogin = function(user, req, res, response) {
  */
 exports.login = function(req, res) {
     // check user and password are valid
-    if (!req.body.user || !req.body.password) {
+    if (!req.body.username || !req.body.password) {
         return res.status(400).json({
             isLogin: false,
             msg: '請輸入帳號密碼',
         });
     }
 
-    var user = req.body.user;
+    var user = req.body.username;
     var password = req.body.password;
 
     var where = {
         where: Sequelize.or({
-            user: user
+            username: user
         })
     };
 
@@ -174,9 +174,9 @@ exports.login = function(req, res) {
 };
 
 /**
- * @api {get} /api/member/status member status
- * @apiName member.status
- * @apiGroup member
+ * @api {get} /api/members/status member status
+ * @apiName members.status
+ * @apiGroup members
  * @apiPermission Login
  *
  * @apiSuccess {object} memberObject details of "current session" member data
@@ -236,9 +236,9 @@ exports.status = function(req, res) {
 };
 
 /**
- * @api {post} /api/member/logout Logout
- * @apiName member.logout
- * @apiGroup member
+ * @api {post} /api/members/logout Logout
+ * @apiName members.logout
+ * @apiGroup members
  * @apiPermission Login
  *
  * @apiSuccess {object} isLogin =false
