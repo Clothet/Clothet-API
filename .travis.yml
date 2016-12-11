@@ -1,0 +1,18 @@
+language: node_js
+node_js:
+- '6'
+before_install:
+- openssl aes-256-cbc -K $encrypted_6c6eba60bc7b_key -iv $encrypted_6c6eba60bc7b_iv
+  -in id_rsa.enc -out ~\/.ssh/id_rsa -d
+- chmod 600 ~/.ssh/id_rsa
+- eval $(ssh-agent)
+- ssh-add ~/.ssh/id_rsa
+- cp .travis/ssh_config ~/.ssh/config
+- git config --global user.name "ssarcandy"
+- git config --global user.email ssarcandy@gmail.com
+- npm install apidoc -g
+- git clone https://github.com/Clothet/Clothet-API-Doc doc
+- cd doc
+- apidoc -i ../routes
+- git add . && git commit -m 'update'
+- git push
