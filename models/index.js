@@ -15,15 +15,8 @@ var Favorite = require("./favorites").Favorite(Sequelize, sequelize);
 var Equipment = require("./equipments").Equipment(Sequelize, sequelize);
 var Combination = require("./combinations").Combination(Sequelize, sequelize);
 var Item_combination = require("./item_combination").Item_combination(Sequelize, sequelize);
+var Image = require("./images").Image(Sequelize, sequelize);
 
-//Restaurant.hasMany(Dish, {
-    //foreignKey: 'restaurant_id',
-    //as: 'dishes'
-//});
-//Dish.belongsTo(Restaurant, {
-    //foreignKey: 'restaurant_id',
-    //as: 'restaurant'
-//});
 Member.hasMany(Favorite, {
     foreignKey: 'member_id',
     as: 'favorites'
@@ -36,9 +29,12 @@ Favorite.belongsTo(Member, {
 exports.sequelize = sequelize;
 exports.Member = Member;
 exports.MemberSession = MemberSession;
-//exports.Restaurant = Restaurant;
 exports.Item = Item;
 exports.Favorite = Favorite;
+exports.Combination = Combination;
+exports.Item_combination = Item_combination;
+exports.Image = Image;
+exports.Equipment = Equipment;
 
 exports.sqlPromise = function(query) {
     return new Promise(function(resolve, reject) {
