@@ -28,9 +28,19 @@ exports.Member = function(Sequelize, sequelize) {
         facebookId: {
             type: Sequelize.TEXT,
             allowNull: true
+        },
+        created_at: {
+            type: Sequelize.DATE,
+            defaultValue: sequelize.literal('NOW()')
+        },
+        updated_at: {
+            type: Sequelize.DATE,
+            defaultValue: sequelize.literal('NOW()')
         }
     }, {
-        tableName: 'members'
+        tableName: 'members',
+        createdAt: 'created_at',
+        updatedAt: 'updated_at',
     });
 
     // encoded password with md5

@@ -21,6 +21,14 @@ exports.Combination = function(Sequelize, sequelize) {
             type: Sequelize.INTEGER,
             allowNull: false,
         },
+        created_at: {
+            type: Sequelize.DATE,
+            defaultValue: sequelize.literal('NOW()')
+        },
+        updated_at: {
+            type: Sequelize.DATE,
+            defaultValue: sequelize.literal('NOW()')
+        }
     }, {
         tableName: 'combinations',
         createdAt: 'created_at',

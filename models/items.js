@@ -8,8 +8,6 @@ var sequelize = new Sequelize(
     local.model.mysql.options
 );
 
-//var Restaurant = require("./restaurant").Restaurant(Sequelize, sequelize);
-
 exports.Item = function(Sequelize, sequelize) {
     const Item = sequelize.define('Item', {
         id: {
@@ -21,10 +19,9 @@ exports.Item = function(Sequelize, sequelize) {
             type: Sequelize.STRING,
             allowNull: false,
         },
-        image_id: {
-            type: Sequelize.INTEGER,
-            unique: true,
-            allowNull: false
+        image: {
+            type: Sequelize.TEXT,
+            allowNull: true
         },
         category: {
             type: Sequelize.STRING,
@@ -50,10 +47,22 @@ exports.Item = function(Sequelize, sequelize) {
             type: Sequelize.STRING,
             allowNull: true
         },
+        size: {
+            type: Sequelize.STRING,
+            allowNull: true
+        },
         serial_no: {
             type: Sequelize.STRING,
             allowNull: false,
             unique: true
+        },
+        created_at: {
+            type: Sequelize.DATE,
+            defaultValue: sequelize.literal('NOW()')
+        },
+        updated_at: {
+            type: Sequelize.DATE,
+            defaultValue: sequelize.literal('NOW()')
         }
     }, {
         tableName: 'items',

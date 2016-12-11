@@ -25,6 +25,14 @@ exports.Image = function(Sequelize, sequelize) {
             type: Sequelize.INTEGER,
             allowNull: true,
         },
+        created_at: {
+            type: Sequelize.DATE,
+            defaultValue: sequelize.literal('NOW()')
+        },
+        updated_at: {
+            type: Sequelize.DATE,
+            defaultValue: sequelize.literal('NOW()')
+        }
     }, {
         tableName: 'images',
         createdAt: 'created_at',
