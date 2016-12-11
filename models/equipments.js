@@ -1,4 +1,5 @@
 'use strict';
+
 var local = require("../config/local");
 var Sequelize = require('sequelize');
 var sequelize = new Sequelize(
@@ -8,35 +9,27 @@ var sequelize = new Sequelize(
     local.model.mysql.options
 );
 
-//var Dish = require("./dish").Dish(Sequelize, sequelize);
 
-exports.Favorite = function(Sequelize, sequelize) {
-    const Favorite = sequelize.define('favorite', {
+exports.Equipment = function(Sequelize, sequelize) {
+    const Equipment = sequelize.define('Equipment', {
         id: {
             type: Sequelize.INTEGER,
             primaryKey: true,
             autoIncrement: true
         },
+        item_id: {
+            type: Sequelize.INTEGER,
+            allowNull: false,
+        },
         member_id: {
             type: Sequelize.INTEGER,
             allowNull: false,
         },
-        combination_id: {
-            type: Sequelize.INTEGER,
-            allowNull: false,
-        }
     }, {
-        tableName: 'favorites',
+        tableName: 'equipments',
         createdAt: 'created_at',
         updatedAt: 'updated_at',
-        indexes: [{
-            fields: ['member_id'],
-            method: 'BTREE'
-        //}, {
-            //fields: ['dish_id'],
-            //method: 'BTREE'
-        }]
     });
 
-    return Favorite;
+    return Equipment;
 };

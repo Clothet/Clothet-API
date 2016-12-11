@@ -30,7 +30,6 @@ var util_path = require('path');
  * @apiParam {string} user member unique email.
  * @apiParam {string} password member password
  * @apiParam {string} username user name.
- * @apiParam {string} gender user gender
  *
  * @apiSuccess {bool} success success
  * @apiSuccessExample Success-Response:
@@ -50,11 +49,10 @@ exports.signup = function(req, res) {
     var newMember = {
         user: req.body.user,
         password: req.body.password,
-        username: req.body.username,
-        gender: req.body.gender
+        username: req.body.username
     };
 
-    if (!newMember.user || !newMember.password || !newMember.username || !newMember.gender) {
+    if (!newMember.user || !newMember.password || !newMember.username) {
         return res.status(400).json({
             error: true,
             msg: 'invaild parameters'
@@ -75,7 +73,6 @@ exports.signup = function(req, res) {
         });
 };
 
-// move out real world login logic, so dcard and facebook login can use it
 var letMeLogin = function(user, req, res, response) {
     req.session.user = user;
     req.session.isLogin = true;
@@ -112,12 +109,8 @@ var letMeLogin = function(user, req, res, response) {
  *         "id": 9,
  *         "user": "aswe@gmail.com",
  *         "username": "req.body.username",
- *         "gender": "M",
  *         "photo": null,
- *         "level": 1,
  *         "facebookId": null,
- *         "createdAt": "2016-04-12T03:26:19.430Z",
- *         "updatedAt": "2016-04-12T03:26:19.430Z"
  *       },
  *       "isLogin": true,
  *       "isValidate": true
@@ -197,9 +190,7 @@ exports.login = function(req, res) {
  *       "user": {
  *         "username": "req.body.username",
  *         "user": "aswe@gmail.com",
- *         "level": 1,
- *         "gender": "M",
- *         "photo": null
+ *         "image": null
  *       }
  *     }
  *
@@ -235,165 +226,12 @@ exports.status = function(req, res) {
         .props(tasks)
         .then(function(results) {
             response.user = {
+                name: req.session.user.name,
                 username: req.session.user.username,
-                user: req.session.user.user,
-                level: req.session.user.level,
-                gender: req.session.user.gender,
-                photo: req.session.user.photo
+                image: req.session.user.image
             };
 
             res.json(response);
-        });
-};
-
-// get facebook member id by access token
-var getFbMember = function(accessToken) {
-    return requestAsync({
-        url: "https://graph.facebook.com/v2.4/me",
-        qs: {
-            access_token: accessToken
-        },
-        json: true
-    }).spread(function(response, body) {
-        // check status code
-        if (response.statusCode !== 200) {
-            throw new Error('status code: ' + response.statusCode);
-        }
-
-        // check body and body.id and body.name exists
-        if (!body || !body.id || !body.name) {
-            throw new Error('response error');
-        }
-
-        //return response body
-        return body;
-    });
-};
-
-exports.facebook_login = function(req, res) {
-    var accessToken = req.body.accessToken;
-
-    if (!accessToken) {
-        return res.status(405).json({
-            msg: 'invalid parameters'
-        });
-    }
-
-    getFbMember(accessToken)
-        .then(function(member) {
-            // get member_id by facebook id
-            return mongo.facebook_login.findOneAsync({
-                    facebook_id: member.id
-                })
-                .then(function(data) {
-                    return {
-                        database: data,
-                        facebookId: member.id
-                    };
-                });
-        })
-        .then(function(result) {
-            if (!result.database) {
-                // there is no datas in facebook_login,
-                // should redirect to /fb-integrate and do the integration
-                res.json({
-                    msg: 'first time fb login'
-                });
-            } else {
-                // login
-                var where = {
-                    where: {
-                        id: result.database.member_id
-                    }
-                };
-                var response = {};
-                Member.find(where).success(function(user) {
-                    if (!user) {
-                        res.status(500).json({
-                            msg: 'cannot find user'
-                        });
-                        return;
-                    }
-                    var halt_time = Math.round((Math.random() + 1) * 1000);
-                    setTimeout(function() {
-                        letMeLogin(user, req, res, response);
-                    }, halt_time);
-                });
-            }
-        })
-        .catch(function(err) {
-            console.error('facebook_login getFbMember error:', err);
-            //slackbot.phantom("[member.js facebook_login getFbMember] " + err, req);
-            res.status(500).json({
-                error: true
-            });
-        });
-};
-
-// login using facebook
-exports.facebook_integrate = function(req, res) {
-    var accessToken = req.body.accessToken;
-    var member_id = parseInt(req.session.user.id);
-
-    if (!accessToken) {
-        return res.status(405).json({
-            msg: 'invalid parameters'
-        });
-    }
-
-    // get facebook id by access token
-    getFbMember(accessToken)
-        .then(function(member) {
-            // get member_id by facebook id
-            return mongo.facebook_login.findOneAsync({
-                    member_id: member_id
-                })
-                .then(function(data) {
-                    return {
-                        database: data,
-                        facebook: member
-                    };
-                });
-        })
-        .then(function(result) {
-            res.json({
-                msg: 'facebook integrate success!',
-                type: result.database ? 'update' : 'insert'
-            });
-
-            mongo.facebook_login.remove({
-                facebook_id: result.facebook.id
-            }, function(err) {
-                if (err) {
-                    console.error('facebook_integrate facebook_login.remove error:', err);
-                    slackbot.phantom("[member.js facebook_integrate getFbMember] " + err, req);
-                    res.status(500).json({
-                        error: true
-                    });
-                    return;
-                }
-
-                // upsert facebook login data
-                mongo.facebook_login.update({
-                    member_id: member_id
-                }, {
-                    $set: {
-                        member_id: member_id,
-                        facebook_id: result.facebook.id,
-                        facebook_name: result.facebook.name,
-                        createdAt: new Date()
-                    }
-                }, {
-                    upsert: true
-                });
-            });
-        })
-        .catch(function(err) {
-            console.error('facebook_integrate getFbMember error:', err);
-            //slackbot.phantom("[member.js facebook_integrate getFbMember] " + err, req);
-            res.status(500).json({
-                error: true
-            });
         });
 };
 

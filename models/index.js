@@ -12,6 +12,9 @@ var Member = require("./members").Member(Sequelize, sequelize);
 var MemberSession = require("./member_session").MemberSession(Sequelize, sequelize);
 var Item = require("./items").Item(Sequelize, sequelize);
 var Favorite = require("./favorites").Favorite(Sequelize, sequelize);
+var Equipment = require("./equipments").Equipment(Sequelize, sequelize);
+var Combination = require("./combinations").Combination(Sequelize, sequelize);
+var Item_combination = require("./item_combination").Item_combination(Sequelize, sequelize);
 
 //Restaurant.hasMany(Dish, {
     //foreignKey: 'restaurant_id',

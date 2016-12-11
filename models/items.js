@@ -57,6 +57,8 @@ exports.Item = function(Sequelize, sequelize) {
         }
     }, {
         tableName: 'items',
+        createdAt: 'created_at',
+        updatedAt: 'updated_at',
         indexes: [{
             fields: ['serial_no'],
             method: 'BTREE'
