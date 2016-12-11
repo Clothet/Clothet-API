@@ -12,6 +12,7 @@ before_install:
 - npm install apidoc -g
 - git clone https://github.com/Clothet/Clothet-API-Doc doc
 - cd doc
+script:
 - apidoc -i ../routes
 - git remote set-url origin git@github.com:Clothet/Clothet-API-Doc.git
 - git add . && git commit -m 'update'
