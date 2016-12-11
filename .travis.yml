@@ -13,5 +13,6 @@ before_install:
 - git clone https://github.com/Clothet/Clothet-API-Doc doc
 - cd doc
 - apidoc -i ../routes
+- git remote set-url origin git@github.com:Clothet/Clothet-API-Doc.git
 - git add . && git commit -m 'update'
 - git push
