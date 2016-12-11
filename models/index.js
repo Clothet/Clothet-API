@@ -16,6 +16,7 @@ var Equipment = require("./equipments").Equipment(Sequelize, sequelize);
 var Combination = require("./combinations").Combination(Sequelize, sequelize);
 var Item_combination = require("./item_combination").Item_combination(Sequelize, sequelize);
 var Image = require("./images").Image(Sequelize, sequelize);
+var Item_style = require("./item_styles").Item_style(Sequelize, sequelize);
 
 Member.hasMany(Favorite, {
     foreignKey: 'member_id',
@@ -24,6 +25,15 @@ Member.hasMany(Favorite, {
 Favorite.belongsTo(Member, {
     foreignKey: 'member_id',
     as: 'member'
+});
+
+Item.hasMany(Item_style, {
+    foreignKey: 'item_serial_no',
+    as: 'styles'
+});
+Item_style.belongsTo(Item, {
+    foreignKey: 'item_serial_no',
+    as: 'item'
 });
 
 exports.sequelize = sequelize;
@@ -35,6 +45,7 @@ exports.Combination = Combination;
 exports.Item_combination = Item_combination;
 exports.Image = Image;
 exports.Equipment = Equipment;
+exports.Item_style = Item_style;
 
 exports.sqlPromise = function(query) {
     return new Promise(function(resolve, reject) {

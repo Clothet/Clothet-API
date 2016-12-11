@@ -17,11 +17,11 @@ exports.Item_combination = function(Sequelize, sequelize) {
             primaryKey: true,
             autoIncrement: true
         },
-        item_id: {
+        item_style_id: {
             type: Sequelize.INTEGER,
             allowNull: false,
         },
-        Combination_id: {
+        combination_id: {
             type: Sequelize.INTEGER,
             allowNull: false,
         },
