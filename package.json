@@ -1,5 +1,5 @@
 {
-  "name": "food-api",
+  "name": "clothet-api",
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
@@ -13,14 +13,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ExchangeWorld/food-API.git"
+    "url": "git+https://github.com/Clothet/Clothet-API.git"
   },
   "author": "ssarcandy",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/ExchangeWorld/food-API/issues"
+    "url": "https://github.com/Clothet/Clothet-API/issues"
   },
-  "homepage": "https://github.com/ExchangeWorld/food-API#readme",
+  "homepage": "https://github.com/Clothet/Clothet-API#readme",
   "dependencies": {
     "angular": "^1.5.5",
     "async": "^2.0.0-rc.3",
