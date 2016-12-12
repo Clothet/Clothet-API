@@ -1,22 +1,24 @@
-var Promise = require("bluebird");
-var local = require("../config/local");
-var Sequelize = require('sequelize');
-var sequelize = new Sequelize(
+'use strict'
+
+const Promise = require("bluebird");
+const local = require("../config/local");
+const Sequelize = require('sequelize');
+const sequelize = new Sequelize(
     local.model.mysql.database,
     local.model.mysql.account,
     local.model.mysql.password,
     local.model.mysql.options
 );
 
-var Member = require("./members").Member(Sequelize, sequelize);
-var MemberSession = require("./member_session").MemberSession(Sequelize, sequelize);
-var Item = require("./items").Item(Sequelize, sequelize);
-var Favorite = require("./favorites").Favorite(Sequelize, sequelize);
-var Equipment = require("./equipments").Equipment(Sequelize, sequelize);
-var Combination = require("./combinations").Combination(Sequelize, sequelize);
-var Item_combination = require("./item_combination").Item_combination(Sequelize, sequelize);
-var Image = require("./images").Image(Sequelize, sequelize);
-var Item_style = require("./item_styles").Item_style(Sequelize, sequelize);
+const Member = require("./members").Member(Sequelize, sequelize);
+const MemberSession = require("./member_session").MemberSession(Sequelize, sequelize);
+const Item = require("./items").Item(Sequelize, sequelize);
+const Favorite = require("./favorites").Favorite(Sequelize, sequelize);
+const Equipment = require("./equipments").Equipment(Sequelize, sequelize);
+const Combination = require("./combinations").Combination(Sequelize, sequelize);
+const Item_combination = require("./item_combination").Item_combination(Sequelize, sequelize);
+const Image = require("./images").Image(Sequelize, sequelize);
+const Item_style = require("./item_styles").Item_style(Sequelize, sequelize);
 
 Member.hasMany(Favorite, {
     foreignKey: 'member_id',

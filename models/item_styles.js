@@ -18,7 +18,7 @@ exports.Item_style = function(Sequelize, sequelize) {
             unique: true
         },
         item_serial_no: {
-            type: Sequelize.STRING,
+            type: Sequelize.INTEGER,
             allowNull: false
         },
         image: {

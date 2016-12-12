@@ -11,7 +11,7 @@ var sequelize = new Sequelize(
 exports.Item = function(Sequelize, sequelize) {
     const Item = sequelize.define('Item', {
         serial_no: {
-            type: Sequelize.STRING,
+            type: Sequelize.INTEGER,
             allowNull: false,
             primaryKey: true,
             unique: true

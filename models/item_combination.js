@@ -25,6 +25,14 @@ exports.Item_combination = function(Sequelize, sequelize) {
             type: Sequelize.INTEGER,
             allowNull: false,
         },
+        category: {
+            type: Sequelize.STRING,
+            allowNull: true,      
+        },
+        image: {
+            type: Sequelize.STRING,
+            allowNull: true,      
+        },
         created_at: {
             type: Sequelize.DATE,
             defaultValue: sequelize.literal('NOW()')
