@@ -78,12 +78,9 @@ exports.list = (req, res) => {
 
 
 /**
- * @api {get} /api/item_combinations List
- * @apiName item_combinations.list
+ * @api {get} /api/item_combinations Show
+ * @apiName item_combinations.show
  * @apiGroup item_combinations
- *
- * @apiParam {number} offset
- * @apiParam {number} limit
  *
  * @apiSuccess {bool} success success
  * @apiSuccessExample Success-Response:
