@@ -12,6 +12,7 @@ var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var RedisStore = require('connect-redis')(session);
 var csurf = require('csurf');
+var cors = require('cors');
 
 var config = require('./config/local');
 
@@ -27,6 +28,8 @@ exports = module.exports = function(options) {
         dumpExceptions: !PRODUCTION,
         showStack: !PRODUCTION
     }));
+
+    ap.use(cors());
 
     options = _.extend({
         log: true,
