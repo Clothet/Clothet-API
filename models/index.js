@@ -38,13 +38,13 @@ Item_style.belongsTo(Item, {
     as: 'item'
 });
 
-// Item_style.hasMany(Item_combination, {
-//     foreignKey: 'item_style_id',
-//     as: 'combinations'
+// Equipment.hasOne(Item, {
+//     foreignKey: 'serial_no',
+//     as: 'details'
 // });
-// Item_combination.belongsTo(Item_style, {
-//     foreignKey: 'item_style_id',
-//     as:'items'
+// Item.belongsTo(Equipment, {
+//     foreignKey: 'serial_no',
+//     as: 'equipment'
 // });
 
 exports.sequelize = sequelize;
