@@ -208,6 +208,8 @@ exports.show = (req, res) => {
  *
  * @apiParam {number} category 分類
  * @apiParam {number} sub_category 次分類
+ * @apiParam {string} name 關鍵字
+ * @apiParam {string} target 客群 (men/woman/sport)
  * 
  * @apiSuccess {bool} success success
  * @apiSuccessExample Success-Response:
@@ -268,10 +270,10 @@ exports.show = (req, res) => {
  *     }
  */
 exports.search = (req, res) => {
-    let {category, sub_category} = req.query;
+    let {category, sub_category, name, target} = req.query;
     let query = { where:{} };
 
-    if (!category && !sub_category) {
+    if (!category && !sub_category && !name && !target) {
         return res.status(400).json({
             msg: 'invalid params'
         });
@@ -279,6 +281,8 @@ exports.search = (req, res) => {
 
     if (category) query.where.category = category;
     if (sub_category) query.where.sub_category = sub_category;
+    if (target) query.where.target = target;
+    if (name) query.where.name = { like: `%${name}%` };
 
     Item
         .findAll(query)
