@@ -9,6 +9,7 @@ const middlewares = require('../middleware/middlewares.js');
 const members = require('./members');
 const items = require('./items');
 const item_combinations = require('./item_combinations');
+const equipments = require('./equipments');
 
 // API logger
 //app.use(middlewares.pageLog);
@@ -30,5 +31,9 @@ app.post('/members/login', members.login);
 app.get('/members/status', middlewares.checkLogin, members.status);
 app.post('/members/logout', middlewares.checkLogin, members.logout);
 
+// equipments
+app.get('/equipments', middlewares.checkLogin, equipments.list);
+// app.post('/equipments', middlewares.checkLogin, equipments.add);
+// app.delete('/equipments', middlewares.checkLogin, equipments.remove);
 
 module.exports = app;
