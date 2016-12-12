@@ -29,7 +29,7 @@ exports = module.exports = function(options) {
         showStack: !PRODUCTION
     }));
 
-    ap.use(cors());
+    app.use(cors());
 
     options = _.extend({
         log: true,
