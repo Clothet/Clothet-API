@@ -85,64 +85,52 @@ exports.list = (req, res) => {
  * @apiSuccess {bool} success success
  * @apiSuccessExample Success-Response:
  HTTP/1.1 200 OK
-[
-  {
-    "id": 34,
-    "item_style_id": 26329031,
-    "combination_id": 9,
-    "category": "women",
-    "image": "http://s1.lativ.com.tw/i/28118/28118_L_07_0.jpg",
-    "created_at": "2016-12-12T08:38:28.000Z",
-    "updated_at": "2016-12-12T08:38:28.000Z",
-    "items": {
-      "id": "26329031",
+{
+  "item_style_id": 2632903,
+  "combination_id": 9,
+  "category": "women",
+  "image": "http://s1.lativ.com.tw/i/28118/28118_L_07_0.jpg",
+  "created_at": "2016-12-12T14:40:03.000Z",
+  "updated_at": "2016-12-12T14:40:03.000Z",
+  "details": [
+    {
+      "id": "2632903",
       "item_serial_no": 26329,
       "image": "/i/26329/26329031/2632903_500.jpg",
       "color": "藏青",
       "size": "S",
-      "created_at": "2016-12-12T08:37:29.000Z",
-      "updated_at": "2016-12-12T08:37:29.000Z"
-    }
-  },
-  {
-    "id": 37,
-    "item_style_id": 28926021,
-    "combination_id": 9,
-    "category": "women",
-    "image": "http://s1.lativ.com.tw/i/28118/28118_L_07_0.jpg",
-    "created_at": "2016-12-12T08:38:28.000Z",
-    "updated_at": "2016-12-12T08:38:28.000Z",
-    "items": {
-      "id": "28926021",
+      "created_at": "2016-12-12T14:37:18.000Z",
+      "updated_at": "2016-12-12T14:37:18.000Z"
+    },
+    {
+      "id": "2811805",
+      "item_serial_no": 28118,
+      "image": "/i/28118/28118051/2811805_500.jpg",
+      "color": "黑色",
+      "size": "M,L,XL,XXL",
+      "created_at": "2016-12-12T14:37:17.000Z",
+      "updated_at": "2016-12-12T14:37:17.000Z"
+    },
+    {
+      "id": "2858803",
+      "item_serial_no": 28588,
+      "image": "/i/28588/28588031/2858803_500.jpg",
+      "color": "黑色",
+      "size": "S,M,L",
+      "created_at": "2016-12-12T14:37:18.000Z",
+      "updated_at": "2016-12-12T14:37:18.000Z"
+    },
+    {
+      "id": "2892602",
       "item_serial_no": 28926,
       "image": "/i/28926/28926021/2892602_500.jpg",
       "color": "鐵灰",
       "size": "F",
-      "created_at": "2016-12-12T08:37:15.000Z",
-      "updated_at": "2016-12-12T08:37:15.000Z"
+      "created_at": "2016-12-12T14:37:17.000Z",
+      "updated_at": "2016-12-12T14:37:17.000Z"
     }
-  },
-  {
-    "id": 35,
-    "item_style_id": 28118055,
-    "combination_id": 9,
-    "category": "women",
-    "image": "http://s1.lativ.com.tw/i/28118/28118_L_07_0.jpg",
-    "created_at": "2016-12-12T08:38:28.000Z",
-    "updated_at": "2016-12-12T08:38:28.000Z",
-    "items": null
-  },
-  {
-    "id": 36,
-    "item_style_id": 28588033,
-    "combination_id": 9,
-    "category": "women",
-    "image": "http://s1.lativ.com.tw/i/28118/28118_L_07_0.jpg",
-    "created_at": "2016-12-12T08:38:28.000Z",
-    "updated_at": "2016-12-12T08:38:28.000Z",
-    "items": null
-  }
-]
+  ]
+}
  *
  * @apiError ServerError server internal error
  * @apiErrorExample Error-Response:
@@ -154,17 +142,26 @@ exports.list = (req, res) => {
 exports.show = (req, res) => {
     let id = req.params.id;
 
+    let result;
     Item_combination
         .findAll({
             where: {
                 combination_id: id
             },
-            include: [{
-                model: Item_style,
-                as: 'items',
-            }],
+            // attributes: ['item_style_id']
         })
-        .then(item => res.json(item))
+        .then(items => {
+            result = items[0].dataValues;
+            delete result.id;
+            return items;
+        })
+        .map(item => {
+            return Item_style.findById(item.item_style_id);
+        })
+        .then(items => {
+            result.details = items.map((i => i.dataValues));
+            res.json(result);
+        })
         .catch(err => {
             console.error(err);
             res.status(500).send();
