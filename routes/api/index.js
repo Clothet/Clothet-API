@@ -33,7 +33,7 @@ app.post('/members/logout', middlewares.checkLogin, members.logout);
 
 // equipments
 app.get('/equipments', middlewares.checkLogin, equipments.list);
-// app.post('/equipments', middlewares.checkLogin, equipments.add);
-// app.delete('/equipments', middlewares.checkLogin, equipments.remove);
+app.post('/equipments/:id', middlewares.checkLogin, equipments.add);
+app.delete('/equipments/:id', middlewares.checkLogin, equipments.remove);
 
 module.exports = app;

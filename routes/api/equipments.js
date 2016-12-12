@@ -56,7 +56,6 @@ HTTP/1.1 200 OK
  *       "error": err_object
  *     }
  */
-
 exports.list = (req, res) => {
     let {offset, limit} = req.query;
 
@@ -73,4 +72,65 @@ exports.list = (req, res) => {
             console.error(err);
             res.status(500).send();
         });
+};
+
+/**
+ * @api {post} /api/equipments/:id Add
+ * @apiName equipments.add
+ * @apiGroup equipments
+ * @apiDescription 加入自己的裝備，需登入
+ *
+ *
+ * @apiSuccess {bool} success success
+ * @apiSuccessExample Success-Response:
+ * HTTP/1.1 200 OK
+ *
+ * @apiError ServerError server internal error
+ * @apiErrorExample Error-Response:
+ * HTTP/1.1 500 error
+ */
+exports.add = (req, res) => {
+    let item_id = req.params.id;
+    let member_id = req.session.user.id;
+
+    Equipment
+        .create({
+            item_id,
+            member_id
+        })
+        .then(() => res.status(200).send())
+        .catch(err => {
+            console.error(err);
+            res.status(500).send();
+        });
+};
+
+/**
+ * @api {delete} /api/equipments/:id Delete
+ * @apiName equipments.delete
+ * @apiGroup equipments
+ * @apiDescription 移除自己的裝備，需登入
+ *
+ *
+ * @apiSuccess {bool} success success
+ * @apiSuccessExample Success-Response:
+ * HTTP/1.1 200 OK
+ *
+ * @apiError ServerError server internal error
+ * @apiErrorExample Error-Response:
+ * HTTP/1.1 500 error
+ */
+exports.remove = (req, res) => {
+    let item_id = req.params.id;
+    let member_id = req.session.user.id;
+
+    Equipment
+        .destroy({
+            where : {
+                item_id,
+                member_id
+            }
+        })
+        .then(() => res.status(200).send())
+        .catch(err => res.status(500).send());
 };
