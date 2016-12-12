@@ -17,3 +17,6 @@ script:
 - git remote set-url origin git@github.com:Clothet/Clothet-API-Doc.git
 - git add . && git commit -m 'update'
 - git push
+branches:
+only:
+- master
