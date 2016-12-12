@@ -38,14 +38,14 @@ Item_style.belongsTo(Item, {
     as: 'item'
 });
 
-Item_style.hasMany(Item_combination, {
-    foreignKey: 'item_style_id',
-    as: 'combinations'
-});
-Item_combination.belongsTo(Item_style, {
-    foreignKey: 'item_style_id',
-    as:'items'
-});
+// Item_style.hasMany(Item_combination, {
+//     foreignKey: 'item_style_id',
+//     as: 'combinations'
+// });
+// Item_combination.belongsTo(Item_style, {
+//     foreignKey: 'item_style_id',
+//     as:'items'
+// });
 
 exports.sequelize = sequelize;
 exports.Member = Member;

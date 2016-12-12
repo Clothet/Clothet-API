@@ -16,30 +16,84 @@ const _ = require('lodash');
  *
  * @apiSuccess {bool} success success
  * @apiSuccessExample Success-Response:
- HTTP/1.1 200 OK
- [
-  {
-    "combination_id": 0,
-    "item_ids": "28123055,28373205,28465042,28925031"
-  },
-  {
-    "combination_id": 1,
-    "item_ids": "28022065,28116045,28587031"
-  },
-  {
-    "combination_id": 2,
-    "item_ids": "28454064,28519044,28553065,28565055"
-  },
-  {
-    "combination_id": 3,
-    "item_ids": "28137045,28352089,28466024"
-  },
-  {
-    "combination_id": 4,
-    "item_ids": "28122055,28374065,28925031"
-  }
+HTTP/1.1 200 OK
+[
+    {
+        "combination_id": 0,
+        "item_ids": "2846504,2837320,2892503,2812305",
+        "details": [
+            {
+                "id": "2812305",
+                "item_serial_no": 28123,
+                "image": "/i/28123/28123051/2812305_500.jpg",
+                "color": "黑色",
+                "size": "S,M,L,XL,XXL",
+                "created_at": "2016-12-12T14:37:18.000Z",
+                "updated_at": "2016-12-12T14:37:18.000Z"
+            },
+            {
+                "id": "2837320",
+                "item_serial_no": 28373,
+                "image": "/i/28373/28373201/2837320_500.jpg",
+                "color": "藍綠格",
+                "size": "S,M,L,XL,XXL",
+                "created_at": "2016-12-12T14:37:18.000Z",
+                "updated_at": "2016-12-12T14:37:18.000Z"
+            },
+            {
+                "id": "2846504",
+                "item_serial_no": 28465,
+                "image": "/i/28465/28465041/2846504_500.jpg",
+                "color": "黑色",
+                "size": "M,L",
+                "created_at": "2016-12-12T14:37:18.000Z",
+                "updated_at": "2016-12-12T14:37:18.000Z"
+            },
+            {
+                "id": "2892503",
+                "item_serial_no": 28925,
+                "image": "/i/28925/28925031/2892503_500.jpg",
+                "color": "藏青",
+                "size": "F",
+                "created_at": "2016-12-12T14:37:16.000Z",
+                "updated_at": "2016-12-12T14:37:16.000Z"
+            }
+        ]
+    },
+    {
+        "combination_id": 1,
+        "item_ids": "2802206,2811604,2858703",
+        "details": [
+            {
+                "id": "2802206",
+                "item_serial_no": 28022,
+                "image": "/i/28022/28022061/2802206_500.jpg",
+                "color": "黑色雪花",
+                "size": "S,M,L,XL,XXL",
+                "created_at": "2016-12-12T14:37:17.000Z",
+                "updated_at": "2016-12-12T14:37:17.000Z"
+            },
+            {
+                "id": "2811604",
+                "item_serial_no": 28116,
+                "image": "/i/28116/28116041/2811604_500.jpg",
+                "color": "黑色",
+                "size": "S,M,L,XL,XXL",
+                "created_at": "2016-12-12T14:37:18.000Z",
+                "updated_at": "2016-12-12T14:37:18.000Z"
+            },
+            {
+                "id": "2858703",
+                "item_serial_no": 28587,
+                "image": "/i/28587/28587031/2858703_500.jpg",
+                "color": "黑色",
+                "size": "S",
+                "created_at": "2016-12-12T14:37:18.000Z",
+                "updated_at": "2016-12-12T14:37:18.000Z"
+            }
+        ]
+    }
 ]
-
  *
  * @apiError ServerError server internal error
  * @apiErrorExample Error-Response:
@@ -56,20 +110,27 @@ exports.list = (req, res) => {
         .findAll({
             attributes: [
                 'combination_id',
-                [Sequelize.fn('GROUP_CONCAT', Sequelize.literal("item_style_id")), 'item_ids']
+                [Sequelize.fn('GROUP_CONCAT', Sequelize.literal("item_style_id")), 'item_ids'],
+
             ],
             group: ['combination_id'],
-            // include: [{
-            //     model: Item_style,
-            //     as: 'items',
-            // }],
             offset: offset ? parseInt(offset, 10) : 0,
-            limit: limit ? parseInt(limit, 10) : 30,
+            limit: limit ? parseInt(limit, 10) : 10,
             order: ['combination_id']
         })
-        .then(group => {
-            res.json(group);
+        .map(com => {
+            return Item_style
+                .findAll({
+                    where: {
+                        id: { $in: com.dataValues.item_ids.split(',') }
+                    }
+                })
+                .then(details => {
+                    com.dataValues.details = details.map(d => d.dataValues);
+                    return com;
+                });
         })
+        .then(result => res.json(result))
         .catch((err) => {
             console.error(err);
             res.status(500).send();
