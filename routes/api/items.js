@@ -278,8 +278,8 @@ exports.search = (req, res) => {
         });
     }
 
-    query.limit = limit ? parseInt(limit) : 30;
-    query.offset = offset ? parseInt(offset) : 0;
+    query.limit = limit ? parseInt(limit, 10) : 30;
+    query.offset = offset ? parseInt(offset, 10) : 0;
 
     if (category) query.where.category = category;
     if (sub_category) query.where.sub_category = sub_category;
