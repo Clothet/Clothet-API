@@ -10,7 +10,7 @@
   },
 
   "rules": {
-    //   "camelcase": [2, {"properties": "never"}],
+      "indent": ["error", 4],
       "comma-dangle": 0,
       "semi": [2, "always"],
       "no-console": 0,

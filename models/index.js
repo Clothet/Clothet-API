@@ -23,20 +23,20 @@ const Item_style = require("./item_styles").Item_style(Sequelize, sequelize);
 Member.hasMany(Favorite, {
     foreignKey: 'member_id',
     as: 'favorites'
-  });
+});
 Favorite.belongsTo(Member, {
     foreignKey: 'member_id',
     as: 'member'
-  });
+});
 
 Item.hasMany(Item_style, {
     foreignKey: 'item_serial_no',
     as: 'styles'
-  });
+});
 Item_style.belongsTo(Item, {
     foreignKey: 'item_serial_no',
     as: 'item'
-  });
+});
 
 // Equipment.hasOne(Item, {
 //     foreignKey: 'serial_no',
@@ -62,8 +62,8 @@ exports.sqlPromise = function(query) {
     return new Promise(function(resolve, reject) {
         query.success(function(result) {
             resolve(result);
-          }).error(function(e) {
+        }).error(function(e) {
             reject(e);
-          });
-      });
-  };
+        });
+    });
+};
