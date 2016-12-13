@@ -10,6 +10,7 @@ before_install:
 - git config --global user.name "ssarcandy"
 - git config --global user.email ssarcandy@gmail.com
 - npm install apidoc -g
+- npm install
 - git clone https://github.com/Clothet/Clothet-API-Doc doc
 - cd doc
 script:
