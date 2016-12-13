@@ -1,0 +1,14 @@
+{
+    "fileExtensions": [".js"],
+
+    "requireSemicolons": true,
+    "requireParenthesesAroundIIFE": true,
+    "validateLineBreaks": "LF",
+    "validateIndentation": 2,
+    "disallowTrailingComma": false,
+    "disallowUnusedParams": true,
+
+    "disallowImplicitTypeConversion": ["string"],
+
+    "excludeFiles": ["node_modules/**", "script/**", "test/**"]
+}
