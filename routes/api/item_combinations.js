@@ -115,25 +115,25 @@ exports.list = (req, res) => {
             offset: offset ? parseInt(offset, 10) : 0,
             limit: limit ? parseInt(limit, 10) : 10,
             order: ['combination_id']
-          })
+        })
         .map(com => {
             return Item_style
                 .findAll({
                     where: {
                         id: { $in: com.dataValues.item_ids.split(',') }
-                      }
-                  })
+                    }
+                })
                 .then(details => {
                     com.dataValues.details = details.map(d => d.dataValues);
                     return com;
-                  });
-          })
+                });
+        })
         .then(result => res.json(result))
         .catch((err) => {
             console.error(err);
             res.status(500).send();
-          });
-  };
+        });
+};
 
 
 /**
@@ -206,26 +206,26 @@ exports.show = (req, res) => {
         .findAll({
             where: {
                 combination_id: id
-              },
-          })
+            },
+        })
         .then(items => {
             result = items[0].dataValues;
             return items;
-          })
+        })
         .map(item => {
             return Item_style.findById(item.item_style_id);
-          })
+        })
         .then(items => {
             result.details = items.map((i => i.dataValues));
             delete result.id;
             delete result.item_style_id;
             res.json(result);
-          })
+        })
         .catch(err => {
             console.error(err);
             res.status(500).send();
-          });
-  };
+        });
+};
 
 /**
  * @api {get} /api/item_combinations/search Search
@@ -329,44 +329,44 @@ exports.search = (req, res) => {
         .findAll({
             where: {
                 item_style_id: item_id
-              },
+            },
             attributes: ['combination_id']
-          })
+        })
         .then(com => {
             const ids = _.values(_.mapValues(com, (i)=>i.combination_id));
             return batchFindCombinations(ids);
-          })
+        })
         .then(coms => res.json(coms));
-  };
+};
 
 
 function batchFindCombinations(ids) {
-  return Item_combination
+    return Item_combination
       .findAll({
           where: {
               combination_id: { $in: ids }
-            },
+          },
           attributes: [
               'combination_id',
               [Sequelize.fn('GROUP_CONCAT', Sequelize.literal("item_style_id")), 'item_ids'],
           ],
           group: ['combination_id'],
           order: ['combination_id']
-        })
+      })
       .map(com => {
           return Item_style
               .findAll({
                   where: {
                       id: { $in: com.dataValues.item_ids.split(',') }
-                    }
-                })
+                  }
+              })
               .then(details => {
                   com.dataValues.details = details.map(d => d.dataValues);
                   return com;
-                });
-        })
+              });
+      })
       .then(result => result)
       .catch((err) => {
           return console.error(err);
-        });
+      });
 }

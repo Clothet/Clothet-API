@@ -11,8 +11,8 @@ sequelize
     .then(function() {
         console.log('success');
         process.exit(0);
-      })
+    })
     .catch(function(err) {
         console.error(err);
         process.exit(1);
-      });
+    });

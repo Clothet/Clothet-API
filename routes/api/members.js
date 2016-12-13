@@ -12,7 +12,7 @@ const local = require('../../config/local');
 let client = redis.createClient(local.session.redis.port, local.session.redis.host);
 client = Promise.promisifyAll(client);
 if (local.session.redis.pass) {
-  client.auth(local.session.redis.pass);
+    client.auth(local.session.redis.pass);
 }
 
 
@@ -44,12 +44,12 @@ exports.signup = function(req, res) {
         username: req.body.username,
         password: req.body.password,
         name: req.body.name
-      };
+    };
 
     if (!newMember.username || !newMember.password || !newMember.name) {
-      return res.status(400).json({
-          error: true,
-          msg: 'invaild parameters'
+        return res.status(400).json({
+            error: true,
+            msg: 'invaild parameters'
         });
     }
 
@@ -58,14 +58,14 @@ exports.signup = function(req, res) {
         .then(function() {
             res.json({
                 success: true
-              });
-          })
+            });
+        })
         .catch(function(err) {
             res.status(500).json({
                 error: err
-              });
-          });
-  };
+            });
+        });
+};
 
 const letMeLogin = function(user, req, res, response) {
     req.session.user = user;
@@ -74,18 +74,18 @@ const letMeLogin = function(user, req, res, response) {
     return MemberSession.create({
         member_id: user.dataValues.id,
         session_id: req.session.id
-      })
+    })
     .then(function() {
         // omit password field
         response.user = _.omit(user.dataValues, 'password');
         response.isLogin = true;
         response.isValidate = true;
         return res.json(response);
-      })
+    })
     .catch(function(err) {
         console.error('login error:', err);
-      });
-  };
+    });
+};
 
 /**
  * @api {post} /api/members/login Login
@@ -121,9 +121,9 @@ const letMeLogin = function(user, req, res, response) {
 exports.login = function(req, res) {
     // check user and password are valid
     if (!req.body.username || !req.body.password) {
-      return res.status(400).json({
-          isLogin: false,
-          msg: '請輸入帳號密碼',
+        return res.status(400).json({
+            isLogin: false,
+            msg: '請輸入帳號密碼',
         });
     }
 
@@ -133,8 +133,8 @@ exports.login = function(req, res) {
     let where = {
         where: Sequelize.or({
             username: user
-          })
-      };
+        })
+    };
 
     // first find username in member
     Member
@@ -144,28 +144,28 @@ exports.login = function(req, res) {
             let halt_time = Math.round((Math.random() + 1) * 1000);
             setTimeout(function() {
                 if (!user) {
-                  req.session.isLogin = false;
-                  response.isLogin = false;
-                  return res.status(400).json(response);
-                } else {
-                  // username is correct, but password is not correct
-                  if (user.password !== passwordHash(password)) {
                     req.session.isLogin = false;
                     response.isLogin = false;
-                    response.msg = '帳號與密碼組合錯誤';
                     return res.status(400).json(response);
-                  }
-                  letMeLogin(user, req, res, response);
+                } else {
+                  // username is correct, but password is not correct
+                    if (user.password !== passwordHash(password)) {
+                        req.session.isLogin = false;
+                        response.isLogin = false;
+                        response.msg = '帳號與密碼組合錯誤';
+                        return res.status(400).json(response);
+                    }
+                    letMeLogin(user, req, res, response);
                 }
-              }, halt_time);
-          }).error(function(err) {
+            }, halt_time);
+        }).error(function(err) {
             console.error('login Member.find error: ', err);
             res.status(500).json({
                 msg: 'server error',
                 isLogin: false
-              });
-          });
-  };
+            });
+        });
+};
 
 /**
  * @api {get} /api/members/status member status
@@ -201,11 +201,11 @@ exports.status = function(req, res) {
         isLogin: false,
         fb_login: {
             status: false
-          }
-      };
+        }
+    };
 
     if ((!_.has(req.session, 'isLogin')) || !req.session.isLogin) {
-      return res.json(response);
+        return res.json(response);
     }
 
     response.isLogin = req.session.isLogin;
@@ -221,11 +221,11 @@ exports.status = function(req, res) {
                 name: req.session.user.name,
                 username: req.session.user.username,
                 image: req.session.user.image
-              };
+            };
 
             res.json(response);
-          });
-  };
+        });
+};
 
 /**
  * @api {post} /api/members/logout Logout
@@ -252,6 +252,6 @@ exports.logout = function(req, res) {
     req.session.destroy(function() {
         res.json({
             isLogin: false
-          });
-      });
-  };
+        });
+    });
+};

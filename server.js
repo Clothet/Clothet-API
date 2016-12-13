@@ -29,44 +29,44 @@ exports = module.exports = function(options) {
     app.use(errorhandler({
         dumpExceptions: !PRODUCTION,
         showStack: !PRODUCTION
-      }));
+    }));
 
     app.use(cors());
 
     options = _.extend({
         log: true,
         csrf: false 
-      }, options);
+    }, options);
 
     // Configuration
     app.locals.config = config;
 
     if (PRODUCTION) {
-      app.enable('view cache');
+        app.enable('view cache');
     }
 
     // Body parser
     app.use(bodyParser.json({
         limit: '50mb'
-      }));
+    }));
     app.use(bodyParser.urlencoded({
         limit: '50mb',
         extended: false
-      }));
+    }));
 
     // Method override
     app.use(methodOverride('_method'));
 
     // Logger
     if (options.log) {
-      const logFormat = typeof options.log === 'string' ? options.log : 'dev';
-      app.use(morgan(logFormat));
+        const logFormat = typeof options.log === 'string' ? options.log : 'dev';
+        app.use(morgan(logFormat));
     }
 
     // Serve static files
     app.use(serveStatic(path.join(__dirname, 'views'), {
         maxAge: 1000 * 60 * 60 * 24 // 1 day
-      }));
+    }));
 
     // Compression
     app.use(compression());
@@ -82,33 +82,33 @@ exports = module.exports = function(options) {
         saveUninitialized: false,
         cookie: {
             maxAge: 1000 * 60 * 60 * 24 * 30 // 30 days
-          }
-      }));
+        }
+    }));
 
     // CSRF
     if (options.csrf) {
-      app.use(csurf());
+        app.use(csurf());
 
-      app.use(function(req, res, next) {
-          if (req.session.isLogin && req.cookies.ca !== 'true') {
-            res.cookie('ca', 'true');
-          } else if (!req.session.isLogin && req.cookies.ca) {
-            res.clearCookie('ca');
-          }
+        app.use(function(req, res, next) {
+            if (req.session.isLogin && req.cookies.ca !== 'true') {
+                res.cookie('ca', 'true');
+            } else if (!req.session.isLogin && req.cookies.ca) {
+                res.clearCookie('ca');
+            }
 
-          res.cookie('XSRF-TOKEN', req.csrfToken());
-          next();
+            res.cookie('XSRF-TOKEN', req.csrfToken());
+            next();
         });
 
       // CSRF error handler
-      app.use(function(err, req, res, next) {
-          if (err.code !== 'EBADCSRFTOKEN') {
-            return next(err);
-          }
+        app.use(function(err, req, res, next) {
+            if (err.code !== 'EBADCSRFTOKEN') {
+                return next(err);
+            }
 
           // handle CSRF token errors here
-          res.status(403);
-          res.send('CSRF token invalid');
+            res.status(403);
+            res.send('CSRF token invalid');
         });
     }
 
@@ -116,12 +116,12 @@ exports = module.exports = function(options) {
     require('./routes')(app);
 
     return app;
-  };
+};
 
 exports.server = function(options) {
     const app = exports(options);
 
     http.createServer(app).listen(config.port, function() {
         console.log('Server listening at %s:%s', 'localhost', config.port);
-      });
-  };
+    });
+};

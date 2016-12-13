@@ -10,16 +10,16 @@ exports.list = (req, res) => {
         .findAll({
             offset: offset ? parseInt(offset, 10) : 0,
             limit: limit ? parseInt(limit, 10) : 30,
-          })
+        })
         // .map(item => Item.findById(item.item_id))
         .then(items => {
             res.json(items);
-          })
+        })
         .catch((err) => {
             console.error(err);
             res.status(500).send();
-          });
-  };
+        });
+};
 
 /**
  * @api {post} /api/favorites/:combination_id Add
@@ -45,14 +45,14 @@ exports.add = (req, res) => {
             where: {
                 combination_id,
                 member_id
-              }
-          })
+            }
+        })
         .then(() => res.status(201).send())
         .catch(err => {
             console.error(err);
             res.status(500).send();
-          });
-  };
+        });
+};
 
 /**
  * @api {delete} /api/favorites/:combination_id Remove
@@ -78,8 +78,8 @@ exports.remove = (req, res) => {
             where : {
                 combination_id,
                 member_id
-              }
-          })
+            }
+        })
         .then(() => res.status(201).send())
         .catch(() => res.status(500).send());
-  };
+};
