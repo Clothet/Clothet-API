@@ -1,8 +1,6 @@
 'use strict';
 
 const express = require('express');
-const multer = require('multer');
-const upload = multer();
 const app = express();
 
 const middlewares = require('../middleware/middlewares.js');
