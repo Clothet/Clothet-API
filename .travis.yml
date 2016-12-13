@@ -10,9 +10,12 @@ before_install:
 - git config --global user.name "ssarcandy"
 - git config --global user.email ssarcandy@gmail.com
 - npm install apidoc -g
+- npm install
+script:
+- npm run lint 
+- npm run jscs
 - git clone https://github.com/Clothet/Clothet-API-Doc doc
 - cd doc
-script:
 - apidoc -i ../routes
 - git remote set-url origin git@github.com:Clothet/Clothet-API-Doc.git
 - git add . && git commit -m 'update'

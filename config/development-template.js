@@ -11,7 +11,7 @@ module.exports = {
         view_cache: false,
         logger_dev: true,
         less: false
-    },
+      },
 
     model: {
         mysql: {
@@ -25,15 +25,15 @@ module.exports = {
                 define: {
                     charset: 'utf8',
                     collate: 'utf8_general_ci'
-                }
-            }
-        },
-    },
+                  }
+              }
+          },
+      },
 
     session: {
         redis: {
             host: 'localhost',
             port: 6379
-        }
-    }
-};
+          }
+      }
+  };

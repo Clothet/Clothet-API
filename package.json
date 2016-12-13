@@ -9,7 +9,9 @@
     "dev": "nodemon cluster.js",
     "doc:build": "cd doc && apidoc -i ../routes && cd ..",
     "doc:start": "cd doc && npm start",
-    "doc": "npm run doc:build && npm run doc:start"
+    "doc": "npm run doc:build && npm run doc:start",
+    "jscs": "jscs --config .linter/.jscsrc .",
+    "lint": "eslint --config .linter/.eslintrc --ignore-path .linter/.eslintignore ."
   },
   "repository": {
     "type": "git",
@@ -24,6 +26,7 @@
   "dependencies": {
     "angular": "^1.5.5",
     "async": "^2.0.0-rc.3",
+    "babel-eslint": "^7.1.1",
     "bluebird": "^3.3.4",
     "body-parser": "^1.15.0",
     "compression": "^1.6.1",
@@ -33,10 +36,12 @@
     "csurf": "^1.8.3",
     "ejs": "^2.4.1",
     "errorhandler": "^1.4.3",
+    "eslint": "^3.12.1",
     "express": "^4.13.4",
     "express-session": "^1.13.0",
     "fuse.js": "^2.2.0",
     "http": "0.0.0",
+    "jscs": "^3.0.7",
     "lodash": "^4.9.0",
     "method-override": "^2.3.5",
     "morgan": "^1.7.0",

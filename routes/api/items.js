@@ -2,9 +2,6 @@
 
 const Item = require('../../models').Item;
 const Item_style = require('../../models').Item_style;
-const Sequelize = require('sequelize');
-const Promise = require('bluebird');
-const _ = require('lodash');
 
 /**
  * @api {get} /api/items List
@@ -69,19 +66,19 @@ exports.list = (req, res) => {
             offset: offset ? parseInt(offset, 10) : 0,
             limit: limit ? parseInt(limit, 10) : 30,
             attributes: { exclude: ['id'] }
-        })
+          })
         .map(item => {
             item.image = item.image ? item.image.split(',') : [];
             return item;
-        })
+          })
         .then(items => {
             res.json(items);
-        })
+          })
         .catch((err) => {
             console.error(err);
             res.status(500).send();
-        });
-};
+          });
+  };
 
 /**
  * @api {get} /api/items/:id Show
@@ -184,21 +181,21 @@ exports.show = (req, res) => {
         .findOne({
             where: {
                 serial_no: id
-            },
+              },
             include: [
                 {
                     model: Item_style,
                     as: 'styles',
                     attributes: { exclude: ['item_serial_no'] }
-                }
+                  }
             ]
-        })
+          })
         .then(item => res.json(item))
         .catch(err => {
             console.error(err);
             res.status(500).send();
-        });
-};
+          });
+  };
 
 
 /**
@@ -274,8 +271,8 @@ exports.search = (req, res) => {
     let query = { where:{} };
 
     if (!category && !sub_category && !name && !target) {
-        return res.status(400).json({
-            msg: 'invalid params'
+      return res.status(400).json({
+          msg: 'invalid params'
         });
     }
 
@@ -288,9 +285,9 @@ exports.search = (req, res) => {
         .findAll(query)
         .then((item) => {
             res.json(item);
-        })
+          })
         .catch((err) => {
             console.error(err);
             res.status(500).send();
-        });
-};
+          });
+  };
