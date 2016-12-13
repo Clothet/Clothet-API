@@ -22,7 +22,7 @@ app.get('/items/:id', items.show);
 
 // item_combination
 app.get('/item_combinations', item_combinations.list);
-// app.get('/items/search', items.search);
+app.get('/item_combinations/search', item_combinations.search);
 app.get('/item_combinations/:id', item_combinations.show);
 
 
