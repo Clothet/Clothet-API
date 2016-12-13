@@ -16,7 +16,9 @@ const favorites = require('./favorites');
 // items
 app.get('/items', items.list);
 app.get('/items/search', items.search);
+app.get('/items/details/:style_id', items.show_details);
 app.get('/items/:id', items.show);
+
 
 // item_combination
 app.get('/item_combinations', item_combinations.list);

@@ -291,3 +291,63 @@ exports.search = (req, res) => {
             res.status(500).send();
         });
 };
+
+/**
+ * @api {get} /api/items/details/:style_id Show Detail
+ * @apiName items.show_detail
+ * @apiGroup items
+ *
+ * @apiSuccess {bool} success success
+ * @apiSuccessExample Success-Response:
+HTTP/1.1 200 OK
+{
+    "id": "1646801",
+    "item_serial_no": 16468,
+    "image": "/i/16468/16468011/1646801_500.jpg",
+    "color": "灰卡其",
+    "size": "7,7.5,8,8.5,9,9.5,10,10.5",
+    "created_at": "2016-12-13T05:46:02.000Z",
+    "updated_at": "2016-12-13T05:46:02.000Z",
+    "item": {
+        "serial_no": 16468,
+        "name": "純棉經典帆布休閒鞋-男",
+        "image": "http://s1.lativ.com.tw/i/16468/16468_L_51.jpg,http://s2.lativ.com.tw/i/16468/16468_L_52.jpg",
+        "category": "家居服&配件",
+        "sub_category": "鞋類",
+        "price": "339",
+        "brand": "lativ",
+        "pattern": "帆布鞋",
+        "target": "men",
+        "created_at": "2016-12-13T05:45:11.000Z",
+        "updated_at": "2016-12-13T05:45:12.000Z"
+    }
+}
+ * @apiError ServerError server internal error
+ * @apiErrorExample Error-Response:
+ *     HTTP/1.1 500 error
+ *     {
+ *       "error": err_object
+ *     }
+ */
+exports.show_details = (req, res) => {
+    let style_id = req.params.style_id;
+
+    Item_style
+        .findOne({
+            where: {
+                id: style_id
+            },
+            include: [
+                {
+                    model: Item,
+                    as: 'item',
+                    // attributes: { exclude: ['item_serial_no'] }
+                }
+            ]
+        })
+        .then(item => res.json(item))
+        .catch(err => {
+            console.error(err);
+            res.status(500).send();
+        });
+};
