@@ -81,5 +81,5 @@ exports.remove = (req, res) => {
               }
           })
         .then(() => res.status(201).send())
-        .catch(err => res.status(500).send());
+        .catch(() => res.status(500).send());
   };

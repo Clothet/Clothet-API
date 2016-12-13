@@ -3,7 +3,6 @@
 
     "requireSemicolons": true,
     "requireParenthesesAroundIIFE": true,
-    "validateLineBreaks": "LF",
     "validateIndentation": 2,
     "disallowTrailingComma": false,
     "disallowUnusedParams": true,
