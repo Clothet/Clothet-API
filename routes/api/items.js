@@ -207,7 +207,9 @@ exports.show = (req, res) => {
  * @apiParam {string} sub_category 次分類
  * @apiParam {string} name 關鍵字
  * @apiParam {string} target 客群 (men/woman/sport)
- * 
+ * @apiParam {number} offset
+ * @apiParam {number} limit
+ *
  * @apiSuccess {bool} success success
  * @apiSuccessExample Success-Response:
  *     HTTP/1.1 200 OK
@@ -267,7 +269,7 @@ exports.show = (req, res) => {
  *     }
  */
 exports.search = (req, res) => {
-    let {category, sub_category, name, target} = req.query;
+    let {category, sub_category, name, target, limit, offset} = req.query;
     let query = { where:{} };
 
     if (!category && !sub_category && !name && !target) {
@@ -275,6 +277,9 @@ exports.search = (req, res) => {
             msg: 'invalid params'
         });
     }
+
+    query.limit = limit ? parseInt(limit) : 30;
+    query.offset = offset ? parseInt(offset) : 0;
 
     if (category) query.where.category = category;
     if (sub_category) query.where.sub_category = sub_category;
