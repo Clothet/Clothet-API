@@ -75,7 +75,7 @@ exports.list = (req, res) => {
 };
 
 /**
- * @api {post} /api/equipments/:id Add
+ * @api {post} /api/equipments/:item_id Add
  * @apiName equipments.add
  * @apiGroup equipments
  * @apiDescription 加入自己的裝備，需登入
@@ -83,22 +83,24 @@ exports.list = (req, res) => {
  *
  * @apiSuccess {bool} success success
  * @apiSuccessExample Success-Response:
- * HTTP/1.1 200 OK
+ * HTTP/1.1 201 OK
  *
  * @apiError ServerError server internal error
  * @apiErrorExample Error-Response:
  * HTTP/1.1 500 error
  */
 exports.add = (req, res) => {
-    let item_id = req.params.id;
+    let item_id = req.params.item_id;
     let member_id = req.session.user.id;
 
     Equipment
-        .create({
-            item_id,
-            member_id
+        .findOrCreate({
+            where: {
+                item_id,
+                member_id
+            }
         })
-        .then(() => res.status(200).send())
+        .then(() => res.status(201).send())
         .catch(err => {
             console.error(err);
             res.status(500).send();
@@ -106,7 +108,7 @@ exports.add = (req, res) => {
 };
 
 /**
- * @api {delete} /api/equipments/:id Delete
+ * @api {delete} /api/equipments/:item_id Delete
  * @apiName equipments.delete
  * @apiGroup equipments
  * @apiDescription 移除自己的裝備，需登入
@@ -114,14 +116,14 @@ exports.add = (req, res) => {
  *
  * @apiSuccess {bool} success success
  * @apiSuccessExample Success-Response:
- * HTTP/1.1 200 OK
+ * HTTP/1.1 201 OK
  *
  * @apiError ServerError server internal error
  * @apiErrorExample Error-Response:
  * HTTP/1.1 500 error
  */
 exports.remove = (req, res) => {
-    let item_id = req.params.id;
+    let item_id = req.params.item_id;
     let member_id = req.session.user.id;
 
     Equipment
@@ -131,6 +133,6 @@ exports.remove = (req, res) => {
                 member_id
             }
         })
-        .then(() => res.status(200).send())
+        .then(() => res.status(201).send())
         .catch(err => res.status(500).send());
 };

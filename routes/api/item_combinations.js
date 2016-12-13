@@ -139,7 +139,7 @@ exports.list = (req, res) => {
 
 
 /**
- * @api {get} /api/item_combinations/:id Show
+ * @api {get} /api/item_combinations/:combination_id Show
  * @apiName item_combinations.show
  * @apiGroup item_combinations
  *

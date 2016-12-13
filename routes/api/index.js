@@ -10,6 +10,7 @@ const members = require('./members');
 const items = require('./items');
 const item_combinations = require('./item_combinations');
 const equipments = require('./equipments');
+const favorites = require('./favorites');
 
 // API logger
 //app.use(middlewares.pageLog);
@@ -33,7 +34,12 @@ app.post('/members/logout', middlewares.checkLogin, members.logout);
 
 // equipments
 app.get('/equipments', middlewares.checkLogin, equipments.list);
-app.post('/equipments/:id', middlewares.checkLogin, equipments.add);
-app.delete('/equipments/:id', middlewares.checkLogin, equipments.remove);
+app.post('/equipments/:item_id', middlewares.checkLogin, equipments.add);
+app.delete('/equipments/:item_id', middlewares.checkLogin, equipments.remove);
+
+// favorites
+app.get('/favorites', middlewares.checkLogin, favorites.list);
+app.post('/favorites/:combination_id', middlewares.checkLogin, favorites.add);
+app.delete('/favorites/:combination_id', middlewares.checkLogin, favorites.remove);
 
 module.exports = app;
