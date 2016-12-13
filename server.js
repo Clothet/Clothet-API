@@ -125,3 +125,5 @@ exports.server = function(options) {
         console.log('Server listening at %s:%s', 'localhost', config.port);
     });
 };
+
+module.exports.app = exports();
