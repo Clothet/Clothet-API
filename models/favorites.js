@@ -1,14 +1,4 @@
 'use strict';
-var local = require("../config/local");
-var Sequelize = require('sequelize');
-var sequelize = new Sequelize(
-    local.model.mysql.database,
-    local.model.mysql.account,
-    local.model.mysql.password,
-    local.model.mysql.options
-);
-
-//var Dish = require("./dish").Dish(Sequelize, sequelize);
 
 exports.Favorite = function(Sequelize, sequelize) {
     const Favorite = sequelize.define('favorite', {

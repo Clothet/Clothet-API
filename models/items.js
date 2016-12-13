@@ -1,12 +1,5 @@
 'use strict';
-const local = require("../config/local");
-const Sequelize = require('sequelize');
-const sequelize = new Sequelize(
-    local.model.mysql.database,
-    local.model.mysql.account,
-    local.model.mysql.password,
-    local.model.mysql.options
-);
+
 
 exports.Item = function(Sequelize, sequelize) {
     const Item = sequelize.define('Item', {

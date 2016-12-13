@@ -1,6 +1,6 @@
 'use strict';
 
-var passwordHash = require('../lib/md5').passwordHash;
+const passwordHash = require('../lib/md5').passwordHash;
 
 exports.Member = function(Sequelize, sequelize) {
     let Member = sequelize.define('Member', {
