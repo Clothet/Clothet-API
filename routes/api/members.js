@@ -61,8 +61,8 @@ exports.signup = function(req, res) {
             });
         })
         .catch(function(err) {
-            res.status(500).json({
-                error: err
+            res.status(400).json({
+                msg: 'already have account.'
             });
         });
 };
