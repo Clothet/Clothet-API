@@ -16,7 +16,7 @@ module.exports = {
     model: {
         mysql: {
             database: "clothet",
-            account: "travis",
+            account: "root",
             password: "",
             options: {
                 host: "127.0.0.1",
