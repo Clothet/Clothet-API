@@ -25,6 +25,9 @@ before_install:
   - npm install apidoc -g
   - npm install
 
+  # Run Redis
+  - sudo docker run -p "6379:6379" -d redis:3.0
+
   # setup for unit-test
   - cp config/travis.js config/local.js
   - mysql -e 'CREATE DATABASE clothet;'

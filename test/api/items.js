@@ -28,5 +28,5 @@ describe('Members', () => {
                 console.log(res.body);
             })
             .end(done);
-    })
+    });
 });
