@@ -8,15 +8,18 @@ const items = require('../fixtures/items.json');
 
 describe('Members', () => {
     before(done => {
-        console.log('before');
         fixtureUtils
             .createFixtures('Item', items)
             .then(() => { done(); });
     });
 
     after(done => {
-        console.log('after');
-        done();
+        fixtureUtils
+            .deleteFixtures('Item')
+            .then(() => { 
+                return fixtureUtils.deleteFixtures('Member');
+            })
+            .then(() => { done(); });
     });
 
     it('Should not create member with non-email', done => {
