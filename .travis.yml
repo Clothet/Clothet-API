@@ -1,25 +1,54 @@
 language: node_js
 node_js:
-- '6'
+  - '6'
+
+dist: trusty
+sudo: required
+
+cache:
+  apt: true
+  directories:
+    - node_modules
+
+services:
+  - mysql
+
 before_install:
-- openssl aes-256-cbc -K $encrypted_6c6eba60bc7b_key -iv $encrypted_6c6eba60bc7b_iv -in .travis/id_rsa.enc -out ~/.ssh/id_rsa -d
-- chmod 600 ~/.ssh/id_rsa
-- eval $(ssh-agent)
-- ssh-add ~/.ssh/id_rsa
-- cp .travis/ssh_config ~/.ssh/config
-- git config --global user.name "ssarcandy"
-- git config --global user.email ssarcandy@gmail.com
-- npm install apidoc -g
-- npm install
+  - openssl aes-256-cbc -K $encrypted_6c6eba60bc7b_key -iv $encrypted_6c6eba60bc7b_iv -in .travis/id_rsa.enc -out ~/.ssh/id_rsa -d
+  - chmod 600 ~/.ssh/id_rsa
+  - eval $(ssh-agent)
+  - ssh-add ~/.ssh/id_rsa
+  - cp .travis/ssh_config ~/.ssh/config
+
+  - git config --global user.name "ssarcandy"
+  - git config --global user.email ssarcandy@gmail.com
+  - npm install apidoc -g
+  - npm install
+
+  # Run Redis
+  - sudo docker run -p "6379:6379" -d redis:3.0
+
+  # setup for unit-test
+  - cp config/travis.js config/local.js
+  - mysql -e 'CREATE DATABASE clothet;'
+  - node scripts/init_mysql_tool.js 1
+
 script:
-- npm run lint 
-- npm run jscs
-- git clone https://github.com/Clothet/Clothet-API-Doc doc
-- cd doc
-- apidoc -i ../routes
-- git remote set-url origin git@github.com:Clothet/Clothet-API-Doc.git
-- git add . && git commit -m 'update'
-- git push
+  # linter
+  - npm run lint 
+  - npm run jscs
+
+  # unit-test
+  - npm test
+
+  # generate API-document and deploy
+  - git clone https://github.com/Clothet/Clothet-API-Doc doc
+  - cd doc
+  - apidoc -i ../routes
+  - git remote set-url origin git@github.com:Clothet/Clothet-API-Doc.git
+  - git add . && git commit -m 'update'
+  - git push
+
 branches:
-only:
-- master
+  only:
+    - master

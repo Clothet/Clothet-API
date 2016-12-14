@@ -60,9 +60,9 @@ exports.signup = function(req, res) {
                 success: true
             });
         })
-        .catch(function(err) {
-            res.status(500).json({
-                error: err
+        .catch(function() {
+            res.status(400).json({
+                msg: 'already have account.'
             });
         });
 };
