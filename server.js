@@ -126,4 +126,4 @@ exports.server = function(options) {
     });
 };
 
-module.exports.app = exports();
+module.exports.app = exports({log: config.middleware.logger_dev});
