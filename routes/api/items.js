@@ -206,7 +206,7 @@ exports.show = (req, res) => {
  * @apiParam {string} category 分類
  * @apiParam {string} sub_category 次分類
  * @apiParam {string} name 關鍵字
- * @apiParam {string} target 客群 (men/woman/sport)
+ * @apiParam {string} target 客群 (men/woman/unisex)
  * @apiParam {number} offset
  * @apiParam {number} limit
  *
