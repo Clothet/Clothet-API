@@ -92,7 +92,7 @@ const letMeLogin = function(user, req, res, response) {
  * @apiName members.login
  * @apiGroup members
  *
- * @apiParam {string} user member's account(email).
+ * @apiParam {string} username member's account(email).
  * @apiParam {string} password member's password
  *
  * @apiSuccess {object} memberObject details of member data
