@@ -7,8 +7,8 @@ exports.Equipment = function(Sequelize, sequelize) {
             primaryKey: true,
             autoIncrement: true
         },
-        item_id: {
-            type: Sequelize.INTEGER,
+        item_style_id: {
+            type: Sequelize.STRING,
             allowNull: false,
         },
         member_id: {

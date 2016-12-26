@@ -34,8 +34,8 @@ app.post('/members/logout', middlewares.checkLogin, members.logout);
 
 // equipments
 app.get('/equipments', middlewares.checkLogin, equipments.list);
-app.post('/equipments/:item_id', middlewares.checkLogin, equipments.add);
-app.delete('/equipments/:item_id', middlewares.checkLogin, equipments.remove);
+app.post('/equipments/:item_style_id', middlewares.checkLogin, equipments.add);
+app.delete('/equipments/:item_style_id', middlewares.checkLogin, equipments.remove);
 
 // favorites
 app.get('/favorites', middlewares.checkLogin, favorites.list);

@@ -1,6 +1,7 @@
 'use strict';
 
 const Equipment = require('../../models').Equipment;
+const Item_style = require('../../models').Item_style;
 const Item = require('../../models').Item;
 
 
@@ -17,32 +18,50 @@ const Item = require('../../models').Item;
  * @apiSuccessExample Success-Response:
 HTTP/1.1 200 OK
 [
-    {
-        "serial_no": 16468,
-        "name": "純棉經典帆布休閒鞋-男",
-        "image": "http://s1.lativ.com.tw/i/16468/16468_L_51.jpg,http://s2.lativ.com.tw/i/16468/16468_L_52.jpg",
-        "category": "家居服&配件",
-        "sub_category": "鞋類",
-        "price": "339",
-        "brand": "lativ",
-        "pattern": "帆布鞋",
-        "target": "men",
-        "created_at": "2016-12-12T14:36:38.000Z",
-        "updated_at": "2016-12-12T14:36:39.000Z"
-    },
-    {
-        "serial_no": 16469,
-        "name": "純棉經典帆布休閒鞋-女",
-        "image": "http://s3.lativ.com.tw/i/16469/16469_L_51.jpg,http://s4.lativ.com.tw/i/16469/16469_L_52.jpg",
-        "category": "家居服&配件",
-        "sub_category": "鞋類",
-        "price": "339",
-        "brand": "lativ",
-        "pattern": "帆布鞋",
-        "target": "women",
-        "created_at": "2016-12-12T14:36:38.000Z",
-        "updated_at": "2016-12-12T14:36:39.000Z"
+  {
+    "id": "1646801",
+    "item_serial_no": 16468,
+    "image": "/i/16468/16468011/1646801_500.jpg",
+    "color": "灰卡其",
+    "size": "7,7.5,8,8.5,9,9.5,10,10.5",
+    "created_at": "2016-12-13T05:46:02.000Z",
+    "updated_at": "2016-12-13T05:46:02.000Z",
+    "item": {
+      "serial_no": 16468,
+      "name": "純棉經典帆布休閒鞋-男",
+      "image": "http://s1.lativ.com.tw/i/16468/16468_L_51.jpg,http://s2.lativ.com.tw/i/16468/16468_L_52.jpg",
+      "category": "家居服&配件",
+      "sub_category": "鞋類",
+      "price": "339",
+      "brand": "lativ",
+      "pattern": "帆布鞋",
+      "target": "men",
+      "created_at": "2016-12-13T05:45:11.000Z",
+      "updated_at": "2016-12-13T05:45:12.000Z"
     }
+  },
+  {
+    "id": "1646803",
+    "item_serial_no": 16468,
+    "image": "/i/16468/16468031/1646803_500.jpg",
+    "color": "紅色",
+    "size": "7.5",
+    "created_at": "2016-12-13T05:46:02.000Z",
+    "updated_at": "2016-12-13T05:46:02.000Z",
+    "item": {
+      "serial_no": 16468,
+      "name": "純棉經典帆布休閒鞋-男",
+      "image": "http://s1.lativ.com.tw/i/16468/16468_L_51.jpg,http://s2.lativ.com.tw/i/16468/16468_L_52.jpg",
+      "category": "家居服&配件",
+      "sub_category": "鞋類",
+      "price": "339",
+      "brand": "lativ",
+      "pattern": "帆布鞋",
+      "target": "men",
+      "created_at": "2016-12-13T05:45:11.000Z",
+      "updated_at": "2016-12-13T05:45:12.000Z"
+    }
+  }
 ]
 
  *
@@ -61,7 +80,20 @@ exports.list = (req, res) => {
             offset: offset ? parseInt(offset, 10) : 0,
             limit: limit ? parseInt(limit, 10) : 30,
         })
-        .map(item => Item.findById(item.item_id))
+        .map(item => {
+            return Item_style
+                .findOne({
+                    where: {
+                        id: item.item_style_id
+                    },
+                    include: [
+                        {
+                            model: Item,
+                            as: 'item',
+                        }
+                    ]
+                })
+        })
         .then(items => {
             res.json(items);
         })
@@ -72,7 +104,7 @@ exports.list = (req, res) => {
 };
 
 /**
- * @api {post} /api/equipments/:item_id Add
+ * @api {post} /api/equipments/:item_style_id Add
  * @apiName equipments.add
  * @apiGroup equipments
  * @apiDescription 加入自己的裝備，需登入
@@ -87,13 +119,13 @@ exports.list = (req, res) => {
  * HTTP/1.1 500 error
  */
 exports.add = (req, res) => {
-    let item_id = req.params.item_id;
+    let item_style_id = req.params.item_style_id;
     let member_id = req.session.user.id;
 
     Equipment
         .findOrCreate({
             where: {
-                item_id,
+                item_style_id,
                 member_id
             }
         })
@@ -105,7 +137,7 @@ exports.add = (req, res) => {
 };
 
 /**
- * @api {delete} /api/equipments/:item_id Delete
+ * @api {delete} /api/equipments/:item_style_id Delete
  * @apiName equipments.delete
  * @apiGroup equipments
  * @apiDescription 移除自己的裝備，需登入
@@ -120,13 +152,13 @@ exports.add = (req, res) => {
  * HTTP/1.1 500 error
  */
 exports.remove = (req, res) => {
-    let item_id = req.params.item_id;
+    let item_style_id = req.params.item_style_id;
     let member_id = req.session.user.id;
 
     Equipment
         .destroy({
             where : {
-                item_id,
+                item_style_id,
                 member_id
             }
         })
