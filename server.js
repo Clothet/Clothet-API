@@ -31,7 +31,9 @@ exports = module.exports = function(options) {
         showStack: !PRODUCTION
     }));
 
-    app.use(cors());
+    app.use(cors({
+        exposedHeaders: ['set-cookie']
+    }));
 
     options = _.extend({
         log: true,
