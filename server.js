@@ -32,7 +32,7 @@ exports = module.exports = function(options) {
     }));
 
     app.use(cors({
-        exposedHeaders: ['set-cookie']
+        credentials: true
     }));
 
     options = _.extend({
