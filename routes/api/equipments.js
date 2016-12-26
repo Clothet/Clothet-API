@@ -73,12 +73,14 @@ HTTP/1.1 200 OK
  *     }
  */
 exports.list = (req, res) => {
-    let {offset, limit} = req.query;
+    const {offset, limit} = req.query;
+    const member_id = req.session.user.id;
 
     Equipment
         .findAll({
             offset: offset ? parseInt(offset, 10) : 0,
             limit: limit ? parseInt(limit, 10) : 30,
+            where: { member_id: member_id }
         })
         .map(item => {
             return Item_style
