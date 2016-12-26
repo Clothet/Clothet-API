@@ -32,7 +32,7 @@ exports = module.exports = function(options) {
     }));
 
     app.use(cors({
-        origin: ['http://localhost:3000', /\.exwd\.csie\.org:5566$/],
+        origin: ['http://localhost:3000', 'http://exwd.csie.org:5566'],
         credentials: true
     }));
 
