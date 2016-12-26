@@ -141,23 +141,20 @@ exports.login = function(req, res) {
         .find(where)
         .then(function(user) {
             let response = {};
-            let halt_time = Math.round((Math.random() + 1) * 1000);
-            setTimeout(function() {
-                if (!user) {
+            if (!user) {
+                req.session.isLogin = false;
+                response.isLogin = false;
+                return res.status(400).json(response);
+            } else {
+                // username is correct, but password is not correct
+                if (user.password !== passwordHash(password)) {
                     req.session.isLogin = false;
                     response.isLogin = false;
+                    response.msg = '帳號與密碼組合錯誤';
                     return res.status(400).json(response);
-                } else {
-                  // username is correct, but password is not correct
-                    if (user.password !== passwordHash(password)) {
-                        req.session.isLogin = false;
-                        response.isLogin = false;
-                        response.msg = '帳號與密碼組合錯誤';
-                        return res.status(400).json(response);
-                    }
-                    letMeLogin(user, req, res, response);
                 }
-            }, halt_time);
+                letMeLogin(user, req, res, response);
+            }
         }).error(function(err) {
             console.error('login Member.find error: ', err);
             res.status(500).json({
