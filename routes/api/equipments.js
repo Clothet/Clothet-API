@@ -92,7 +92,7 @@ exports.list = (req, res) => {
                             as: 'item',
                         }
                     ]
-                })
+                });
         })
         .then(items => {
             res.json(items);
