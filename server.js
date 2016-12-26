@@ -32,6 +32,7 @@ exports = module.exports = function(options) {
     }));
 
     app.use(cors({
+        origin: ['localhost:3000'],
         credentials: true
     }));
 
