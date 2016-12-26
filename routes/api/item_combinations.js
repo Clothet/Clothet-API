@@ -109,7 +109,6 @@ exports.list = (req, res) => {
             attributes: [
                 'combination_id',
                 [Sequelize.fn('GROUP_CONCAT', Sequelize.literal("item_style_id")), 'item_ids'],
-
             ],
             group: ['combination_id'],
             offset: offset ? parseInt(offset, 10) : 0,
