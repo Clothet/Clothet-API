@@ -133,14 +133,16 @@ const Sequelize = require('sequelize');
  */
 exports.list = (req, res) => {
     let {offset, limit} = req.query;
+    let member_id = req.session.user.id;
+
 
     Favorite
         .findAll({
+            where: { member_id },
             offset: offset ? parseInt(offset, 10) : 0,
             limit: limit ? parseInt(limit, 10) : 30,
             attributes: ['combination_id']
         })
-        // .map(item => Item.findById(item.item_id))
         .map(id => id.dataValues.combination_id)
         .then(ids => {
             console.log(ids);
