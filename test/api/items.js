@@ -5,7 +5,7 @@ const supertest = require('supertest')(app);
 const fixtureUtils = require('../utils/fixture_utils.js');
 const items = require('../fixtures/items.json');
 
-describe('Members', () => {
+describe('Items', () => {
     before(done => {
         fixtureUtils
             .createFixtures('Item', items)

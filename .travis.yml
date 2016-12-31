@@ -49,6 +49,10 @@ script:
   - git add . && git commit -m 'update'
   - git push
 
+after_success:
+  # trigger deploy webhook
+  - curl -X POST http://exwd.csie.org:1234/deploy/Clothet-API/master
+
 branches:
   only:
     - master
