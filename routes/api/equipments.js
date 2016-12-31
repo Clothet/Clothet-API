@@ -125,11 +125,9 @@ exports.add = (req, res) => {
     let member_id = req.session.user.id;
 
     Equipment
-        .findOrCreate({
-            where: {
-                item_style_id,
-                member_id
-            }
+        .create({
+            item_style_id,
+            member_id
         })
         .then(() => res.status(201).send())
         .catch(err => {
